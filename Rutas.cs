@@ -76,3 +76,117 @@ namespace Bases_Rutas
         }
 
         public void Eliminar(string nombre)
+        {
+            Bases temp = inicio;
+
+            if (temp.nombre == nombre)
+            {
+                if (temp.siguiente == inicio)
+                    inicio = null;
+                else
+                {
+                    while (temp.siguiente != inicio)
+                        temp = temp.siguiente;
+
+                    temp.siguiente = inicio.siguiente;
+                    inicio = inicio.siguiente;
+                }
+            }
+            else
+            {
+                while (temp.siguiente != inicio && temp.siguiente.nombre != nombre)
+                    temp = temp.siguiente;
+
+                if (temp.siguiente.nombre == nombre)
+                    temp.siguiente = temp.siguiente.siguiente;
+            }
+        }
+
+        public void EliminarInicio()
+        {
+            Bases temp = inicio;
+
+            if (temp.siguiente == inicio)
+                inicio = null;
+            else
+            {
+                while (temp.siguiente != inicio)
+                    temp = temp.siguiente;
+
+                temp.siguiente = inicio.siguiente;
+                inicio = inicio.siguiente;
+            }
+        }
+
+        public void EliminarFinal()
+        {
+            Bases temp = inicio;
+
+            if (temp.siguiente == inicio)
+                inicio = null;
+            else
+            {
+                while (temp.siguiente.siguiente != inicio)
+                    temp = temp.siguiente;
+
+                temp.siguiente = inicio;
+            }
+        }
+
+        public string Reporte()
+        {
+            string cadena = "";
+            Bases temp = inicio;
+
+            if (temp != null)
+            {
+                while (temp.siguiente != inicio)
+                {
+                    cadena += temp.ToString();
+                    temp = temp.siguiente;
+                }
+
+                cadena += temp.ToString();
+                return cadena;
+            }
+            else
+                return "";
+        }
+
+        public void Insertar(string nombre, Bases nueva)
+        {
+            Bases temp = Buscar(nombre);
+
+            nueva.siguiente = temp.siguiente;
+            temp.siguiente = nueva;
+        }
+
+        public string Recorrido(string nombre, int tInicio, int tFinal)
+        {
+            Bases temp = Buscar(nombre), auxiliar = Buscar(nombre);
+            string cadena = "";
+
+            while (temp.siguiente != auxiliar)
+            {
+                cadena += temp.nombre + "        ";
+                temp = temp.siguiente;
+            }
+
+            cadena += Convert.ToString(temp.nombre);
+            temp = temp.siguiente;
+            tInicio -= Convert.ToInt32(temp.minutos);
+
+            while (tInicio <= tFinal)
+            {
+                tInicio += Convert.ToInt32(temp.minutos);
+                if (temp == auxiliar)
+                    cadena += Environment.NewLine;
+
+                cadena += tInicio.ToString("0000") + " ";
+                temp = temp.siguiente;
+            }
+
+            return cadena;
+        }
+    }
+}
